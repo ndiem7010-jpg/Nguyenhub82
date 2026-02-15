@@ -1,0 +1,100 @@
+-- ==========================================
+-- BẢO MẬT ĐỘC QUYỀN: CHỈ ANHTAMDATROLAIC
+-- ==========================================
+if game.Players.LocalPlayer.Name ~= "Anhtamdatrolaic" then
+    game.Players.LocalPlayer:Kick("có cái con cặc mà vô script tao")
+    return 
+end
+
+-- [GIAO DIỆN CHÍNH]
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "🔥 Nguyên Hub | LITE V8",
+   LoadingTitle = "Đang tải bản rút gọn...",
+   LoadingSubtitle = "Chào Đại Ca Anhtamdatrolaic!",
+   ConfigurationSaving = {Enabled = true, FolderName = "NguyenHubLite", FileName = "Config"},
+   KeySystem = false, 
+})
+
+--- BIẾN LƯU TRỮ ---
+local WS, JP = 16, 50
+local LoopWS, LoopJP, NC = false, false, false
+local ESP_P, ESP_M = false, false
+
+--- TAB 1: TRANG CHỦ ---
+local T1 = Window:CreateTab("🏠 Trang Chủ", 4483362458)
+T1:CreateSection("Hệ Thống Treo Máy")
+T1:CreateButton({
+   Name = "🚀 KÍCH HOẠT ANTI-AFK",
+   Callback = function()
+      game.Players.LocalPlayer.Idled:Connect(function()
+         game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+         task.wait(1)
+         game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+      end)
+      Rayfield:Notify({Title = "Nguyên Hub", Content = "Đã bật Anti-AFK!", Duration = 5})
+   end,
+})
+
+T1:CreateSection("Chỉ Số Nhân Vật")
+T1:CreateInput({Name = "Tốc Độ", PlaceholderText = "16...", Callback = function(t) WS = tonumber(t) or 16 end})
+T1:CreateToggle({Name = "Lặp Tốc Độ", CurrentValue = false, Callback = function(v) LoopWS = v end})
+T1:CreateInput({Name = "Sức Nhảy", PlaceholderText = "50...", Callback = function(t) JP = tonumber(t) or 50 end})
+T1:CreateToggle({Name = "Lặp Sức Nhảy", CurrentValue = false, Callback = function(v) LoopJP = v end})
+T1:CreateToggle({Name = "🔥 Xuyên Tường (Noclip)", CurrentValue = false, Callback = function(v) NC = v end})
+
+--- TAB 2: ESP ---
+local T2 = Window:CreateTab("👁️ ESP", 4483362458)
+T2:CreateToggle({Name = "ESP Người Chơi", CurrentValue = false, Callback = function(v) ESP_P = v end})
+T2:CreateToggle({Name = "ESP NPC & Quái", CurrentValue = false, Callback = function(v) ESP_M = v end})
+
+--- TAB 3: BLOX FRUIT VIP ---
+local T3 = Window:CreateTab("🍍 Blox Fruit", 4483362458)
+T3:CreateButton({Name = "Banana Pre", Callback = function() getgenv().Key = "594b1f755c8c641f8d104207"; loadstring(game:HttpGet("https://raw.githubusercontent.com/obiiyeuem/vthangsitink/main/BananaHub.lua"))() end})
+T3:CreateButton({Name = "Farm Chest 💰", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/RichKidz-PX/RichKidz/main/FarmMoney.lua"))() end})
+T3:CreateButton({Name = "Dragon Hub", Callback = function() getgenv().team = "Pirates"; loadstring(game:HttpGet("https://raw.githubusercontent.com/dragonhubdev/dragonwitheveryone/refs/heads/main/Main-BF.lua"))() end})
+T3:CreateButton({Name = "Annie Hub", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Anniecreate86/BloxFruits/refs/heads/main/BetaHub-BF"))() end})
+
+--- TAB 4: SHADER ---
+local T4 = Window:CreateTab("🌈 Shader", 4483362458)
+T4:CreateButton({Name = "PShade Ultimate", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/randomstring0/pshade-ultimate/refs/heads/main/src/cd.lua'))() end})
+T4:CreateButton({Name = "Lọ Đế Chí Tôn 👑", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/anuragaming1/anura/refs/heads/main/soclo.lua"))() end})
+T4:CreateButton({Name = "Bật Fullbright", Callback = function() game:GetService("Lighting").Brightness = 2; game:GetService("Lighting").ClockTime = 14 end})
+
+--- HỆ THỐNG THỰC THI ---
+game:GetService("RunService").Stepped:Connect(function()
+    pcall(function()
+        local char = game.Players.LocalPlayer.Character
+        if char and char:FindFirstChild("Humanoid") then
+            if LoopWS then char.Humanoid.WalkSpeed = WS end
+            if LoopJP then char.Humanoid.JumpPower = JP end
+            if NC then
+                for _, v in pairs(char:GetDescendants()) do
+                    if v:IsA("BasePart") then v.CanCollide = false end
+                end
+            end
+        end
+    end)
+end)
+
+task.spawn(function()
+    while task.wait(1) do
+        if ESP_P then
+            for _, p in pairs(game.Players:GetPlayers()) do
+                if p ~= game.Players.LocalPlayer and p.Character and not p.Character:FindFirstChild("Highlight") then
+                    Instance.new("Highlight", p.Character).FillColor = Color3.fromRGB(255, 0, 0)
+                end
+            end
+        end
+        if ESP_M then
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("Humanoid") and not game.Players:GetPlayerFromCharacter(v.Parent) and v.Parent and not v.Parent:FindFirstChild("Highlight") then
+                    Instance.new("Highlight", v.Parent).FillColor = Color3.fromRGB(255, 255, 0)
+                end
+            end
+        end
+    end
+end)
+
+Rayfield:Notify({Title = "NGUYÊN HUB LITE", Content = "Đã bỏ Anti-Cheat theo ý Đại ca!", Duration = 5})
